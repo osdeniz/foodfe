@@ -1,0 +1,6 @@
+<div>{{title}}</div>
+
+<div *ngFor="let food of foods" (click)="openDetail(food.id)">
+  {{food.title}} - {{food.description}}
+</div>
+
