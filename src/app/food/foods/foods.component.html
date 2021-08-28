@@ -1,6 +1,59 @@
-<div>{{title}}</div>
 
-<div *ngFor="let food of foods" (click)="openDetail(food.id)">
-  {{food.title}} - {{food.description}}
+
+<div class="row">
+<div *ngFor="let food of foods">
+
+    <div class="col mt-2">
+      <div class="card" style="width: 18rem;">
+        <img src="https://picsum.photos/id/237/200/200" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{food.title}}</h5>
+          <p class="card-text">{{food.description}}</p>
+          <a  class="btn btn-primary mr-2" (click)="openDetail(food.id)">Detail</a>
+          <a class="btn btn-dark" data-toggle="modal" data-target="#foodModal" (click)="edit(food)"> Update </a>
+        </div>
+      </div>
+    </div>
+
 </div>
 
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="foodModal" tabindex="-1" aria-labelledby="foodModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Food Create Or Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="form">
+        <form [formGroup]="form">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="email" class="form-control" id="title" aria-describedby="title" placeholder="Enter Title"
+                   formControlName="title">
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Enter Description"  formControlName="description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="list">List</label>
+            <textarea class="form-control" id="list" rows="3" placeholder="Enter List" formControlName="list"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="createOrUpdate()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

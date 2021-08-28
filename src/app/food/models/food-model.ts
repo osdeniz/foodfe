@@ -4,7 +4,7 @@ export namespace FoodModel{
 
   }
 
-  export interface FoodResponse{
+  export interface FoodItem{
     id:number;
     title:string
     description:string

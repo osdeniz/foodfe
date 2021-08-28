@@ -13,7 +13,7 @@ export class FoodDetailComponent{
   title = 'Food Detail'
 
 
-  foodItem:FoodModel.FoodResponse | undefined;
+  foodItem:FoodModel.FoodItem | undefined;
 
   constructor(private foodService:FoodService,private activatedRoute:ActivatedRoute) {
 
@@ -22,7 +22,10 @@ export class FoodDetailComponent{
   ngOnInit(){
    const params = this.activatedRoute.snapshot.params;
    const foodId = params.id;
-   this.foodItem = this.foodService.getFoods().find(item=>item.id == foodId);
+
+   this.foodService.getFoodDetail(foodId).subscribe(food=>{
+     this.foodItem = food
+   });
 
   }
 
