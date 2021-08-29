@@ -3,6 +3,7 @@ import {FoodService} from "../food-service";
 import {FoodModel} from "../models/food-model";
 import {Route, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector:'app-foods',
@@ -20,6 +21,10 @@ export class FoodsComponent implements OnDestroy{
     private sub:any;
 
     form:FormGroup | undefined;
+
+    operationStatus = false;
+
+    deleteOperationMessage:any;
 
 
 
@@ -48,26 +53,56 @@ export class FoodsComponent implements OnDestroy{
 
     }
 
-    createOrUpdate(){
+    create(){
+      this.form = this.fb.group({
+        id:[null],
+        title:['',[Validators.required]],
+        description:[''],
+        list:['',[Validators.required]]
+      })
+    }
 
-      if(this.form?.valid){
+    createOrUpdate(){
+     if(this.form?.valid){
         let payload = {
           id:this.form?.controls['id'].value,
           title:this.form?.controls['title'].value,
           description:this.form?.controls['description'].value,
           foodDetails:this.form?.controls['list'].value
         }
+        this.operationStatus = true;
+        setTimeout(()=>{
+          this.foodService.updateFood(payload).pipe(catchError(err => {
+            this.operationStatus = false;
+            throw  err;
+          })).subscribe(food=>{
+            this.operationStatus = false;
+            if(payload.id == null){
+              this.form?.reset();
+            }
+          });
+        },1000)
 
-        this.foodService.updateFood(payload).subscribe(food=>{
-          console.warn(food)
-        });
-
-      }else{
-        //todo hata mesajı
       }
+    }
 
+    deleteModal(food:FoodModel.FoodItem){
+        this.selectedFood = food;
+    }
 
+    delete(){
+        const id = this.selectedFood?.id || -1;
+        this.operationStatus = true;
+        setTimeout(()=>{
+          this.foodService.delete(id).pipe(catchError(err=>{
+            this.operationStatus = false;
+            throw err;
+          })).subscribe((res)=>{
+            this.operationStatus = false;
+            this.deleteOperationMessage = res;
 
+          })
+        },1000)
     }
 
     ngOnDestroy(): void {
