@@ -32,9 +32,10 @@ export class FoodService{
     return this.httpClient.delete(environment.api + '/food/' + id, { headers, responseType: 'text'});
   }
 
-  message() : string{
-    return 'benden selam olsun!'
+  search(search:string):Observable<FoodModel.FoodItem[]>{
+    return this.httpClient.get<FoodModel.FoodItem[]>(environment.api + '/food/search/' + search)
   }
+
 
 
 

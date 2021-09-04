@@ -4,6 +4,7 @@ import {FoodModel} from "../models/food-model";
 import {Route, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {catchError} from "rxjs/operators";
+import {CrossService} from "../../services/cross-service";
 
 @Component({
   selector:'app-foods',
@@ -20,6 +21,8 @@ export class FoodsComponent implements OnDestroy{
 
     private sub:any;
 
+    private subCrross:any;
+
     form:FormGroup | undefined;
 
     operationStatus = false;
@@ -28,14 +31,15 @@ export class FoodsComponent implements OnDestroy{
 
 
 
-    constructor(private foodService:FoodService,private router:Router,private fb:FormBuilder) {
+    constructor(private foodService:FoodService,private router:Router,private fb:FormBuilder,private crossService:CrossService) {
+
+
     }
 
     ngOnInit(){
-      this.sub = this.foodService.getFoods().subscribe(foods=>{
+      this.subCrross = this.crossService.foodUpload.subscribe(foods=>{
         this.foods = foods;
       })
-
     }
 
     openDetail(id:number){
@@ -107,6 +111,7 @@ export class FoodsComponent implements OnDestroy{
 
     ngOnDestroy(): void {
       this.sub.unsubscribe();
+      this.subCrross.unsubscribe();
 
     }
 

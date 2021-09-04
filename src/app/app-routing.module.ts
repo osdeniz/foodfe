@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path:'foods',
     loadChildren:()=>import('./food/food.module').then(m=>m.FoodModule)
+  },
+  {
+    path:'users',
+    loadChildren:()=>import('./user/user.module').then(m=>m.UserModule)
   }
 ];
 
