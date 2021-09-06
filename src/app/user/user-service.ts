@@ -16,4 +16,16 @@ export class UserService{
     return this.httpClient.get<UserModel.User[]>(environment.api + '/auth/users')
   }
 
+  register(payload:UserModel.User):Observable<UserModel.User>{
+    return this.httpClient.post<UserModel.User>(environment.api + '/auth/register',payload)
+  }
+
+  update(payload:UserModel.User):Observable<UserModel.User>{
+    return this.httpClient.put<UserModel.User>(environment.api + '/auth/update',payload)
+  }
+
+  getUserInfoById(id:number):Observable<UserModel.User>{
+    return this.httpClient.get<UserModel.User>(environment.api + '/auth/' + id)
+  }
+
 }

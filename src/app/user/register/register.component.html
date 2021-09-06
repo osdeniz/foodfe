@@ -1,35 +1,66 @@
 
 <div class="shadow-sm p-3 m-5 bg-white">
-  <form>
-    <div class="form-group">
-      <label for="firstName">First Name</label>
-      <input type="text" class="form-control" id="firstName" aria-describedby="firstName" placeholder="Enter firstname">
-    </div>
 
-    <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input type="text" class="form-control" id="lastName" aria-describedby="firstName" placeholder="Enter lastname">
-    </div>
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter email">
-    </div>
+  <ng-container *ngIf="form">
+    <form [formGroup]="form" >
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" aria-describedby="firstName" placeholder="Enter firstname" formControlName="firstName">
+        <small id="firstNameRequired" class="text-danger" *ngIf="form.controls.firstName.touched && form.controls.firstName.errors && form.controls.firstName.errors.required" >
+          Please Enter valid value
+        </small>
+      </div>
 
-    <div class="form-group">
-      <label for="roleName">Role</label>
-      <input type="text" class="form-control" id="roleName" name="roleName" aria-describedby="role" placeholder="Enter role">
-    </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Enter lastname" formControlName="lastName">
+        <small id="lastNameRequired" class="text-danger" *ngIf="form.controls.lastName.touched && form.controls.lastName.errors && form.controls.lastName.errors.required" >
+          Please Enter valid value
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter email" formControlName="email">
+        <small id="emailNameRequired" class="text-danger" *ngIf="form.controls.email.touched && form.controls.email.errors && form.controls.email.errors.required" >
+          Please Enter valid value
+        </small>
+      </div>
 
-    <div class="form-group">
-      <label for="imageLink">Image Link</label>
-      <input type="text" class="form-control" id="imageLink" aria-describedby="imageLink" placeholder="Enter image link">
-    </div>
+      <div class="form-group">
+        <label for="roleName">Role</label>
+        <input type="text" class="form-control" id="roleName" name="roleName" aria-describedby="role" placeholder="Enter role" formControlName="role">
+      </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" placeholder="Password">
-    </div>
+      <div class="form-group">
+        <label for="imageLink">Image Link</label>
+        <input type="text" class="form-control" id="imageLink" aria-describedby="imageLink" placeholder="Enter image link" formControlName="image">
+      </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+        <small id="passwordNameRequired" class="text-danger" *ngIf="form.controls.password.touched && form.controls.password.errors && form.controls.password.errors.required" >
+          Please Enter valid value
+        </small>
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="saveOrUpdate()">
+        <span *ngIf="loading">
+          Lütfen bekleyiniz.
+          <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </span>
+        <span *ngIf="!loading">Save</span>
+      </button>
+    </form>
+  </ng-container>
+
+  <div class="alert alert-success mt-2" role="alert" *ngIf="status=='success'">
+    success
+  </div>
+  <div class="alert alert-danger mt-2" role="alert"  *ngIf="status=='error'">
+    error
+  </div>
+
 </div>
