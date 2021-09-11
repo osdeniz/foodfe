@@ -5,6 +5,7 @@ import {Route, Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {catchError} from "rxjs/operators";
 import {CrossService} from "../../services/cross-service";
+import {UserModel} from "../../user/models/user-model";
 
 @Component({
   selector:'app-foods',
@@ -19,7 +20,7 @@ export class FoodsComponent implements OnDestroy{
 
     selectedFood: FoodModel.FoodItem | undefined;
 
-    private sub:any;
+
 
     private subCrross:any;
 
@@ -28,6 +29,9 @@ export class FoodsComponent implements OnDestroy{
     operationStatus = false;
 
     deleteOperationMessage:any;
+    createOrUpdateMessage:any;
+
+
 
 
 
@@ -78,9 +82,18 @@ export class FoodsComponent implements OnDestroy{
         setTimeout(()=>{
           this.foodService.updateFood(payload).pipe(catchError(err => {
             this.operationStatus = false;
+            this.createOrUpdateMessage = 'Sistemde bir hata oluştu.'
+
+            setTimeout(()=>{
+              this.createOrUpdateMessage = ''
+            },4000)
             throw  err;
           })).subscribe(food=>{
             this.operationStatus = false;
+            this.createOrUpdateMessage = 'İşlem başarılı.'
+            setTimeout(()=>{
+              this.createOrUpdateMessage = ''
+            },4000)
             if(payload.id == null){
               this.form?.reset();
             }
@@ -100,17 +113,25 @@ export class FoodsComponent implements OnDestroy{
         setTimeout(()=>{
           this.foodService.delete(id).pipe(catchError(err=>{
             this.operationStatus = false;
+
             throw err;
           })).subscribe((res)=>{
             this.operationStatus = false;
             this.deleteOperationMessage = res;
 
+            setTimeout(()=>{
+              this.deleteOperationMessage = ""
+            },4000)
+
+
           })
         },1000)
     }
 
+
+
     ngOnDestroy(): void {
-      this.sub.unsubscribe();
+
       this.subCrross.unsubscribe();
 
     }

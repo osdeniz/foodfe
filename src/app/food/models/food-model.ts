@@ -1,3 +1,5 @@
+import {UserModel} from "../../user/models/user-model";
+
 export namespace FoodModel{
 
   export interface FoodDto{
@@ -10,6 +12,7 @@ export namespace FoodModel{
     description:string
     createDate?:Date;
     foodDeails?:string
+    user?:UserModel.User
   }
 
 }

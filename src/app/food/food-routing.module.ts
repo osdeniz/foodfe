@@ -5,8 +5,18 @@ import {FoodDetailComponent} from "./food-detail/food-detail.component";
 
 
 const routes :Routes = [
-  { path:'',component:FoodsComponent },
-  {path:':id',component:FoodDetailComponent}
+  {
+    path:'',
+    data:
+      {
+        page:'list'
+      },
+    component:FoodsComponent
+  },
+  {
+    path:':id',
+    component:FoodDetailComponent
+  }
 ]
 
 @NgModule({

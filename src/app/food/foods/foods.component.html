@@ -101,6 +101,16 @@
           </div>
 
         </form>
+
+        <ng-container *ngIf="createOrUpdateMessage">
+          <div class="alert alert-success" role="alert" *ngIf="createOrUpdateMessage.indexOf('başarılı') > -1">
+            İşlem Başarılı!
+          </div>
+
+          <div class="alert alert-danger" role="alert" *ngIf="createOrUpdateMessage.indexOf('hata') > -1">
+            İşlem Başarısız!
+          </div>
+        </ng-container>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
