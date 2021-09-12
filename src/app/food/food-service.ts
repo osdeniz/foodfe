@@ -50,6 +50,13 @@ export class FoodService{
   }
 
 
+  newCreateOrUpdate(body:any){
+    const jsonString = localStorage.getItem('selectedUser') || '';
+    const userId = CommonUtility.getInstance().getSelectedUserId(jsonString)
+    return this.httpClient.post<FoodModel.FoodItem>(environment.api + '/food/newCreateOrUpdate?userId=' + userId,body)
+  }
+
+
 
 
 }

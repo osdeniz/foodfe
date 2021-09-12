@@ -29,7 +29,10 @@ export class FoodsComponent implements OnDestroy{
     operationStatus = false;
 
     deleteOperationMessage:any;
+
     createOrUpdateMessage:any;
+
+    selectedFile :File | undefined;
 
 
 
@@ -70,7 +73,7 @@ export class FoodsComponent implements OnDestroy{
       })
     }
 
-    createOrUpdate(){
+    /*createOrUpdate(){
      if(this.form?.valid){
         let payload = {
           id:this.form?.controls['id'].value,
@@ -101,7 +104,7 @@ export class FoodsComponent implements OnDestroy{
         },1000)
 
       }
-    }
+    }*/
 
     deleteModal(food:FoodModel.FoodItem){
         this.selectedFood = food;
@@ -128,12 +131,78 @@ export class FoodsComponent implements OnDestroy{
         },1000)
     }
 
+    onFileChanged(event:any){
+        this.selectedFile = event.target.files[0];
+    }
+
+    newSubmit(){
+
+      const formData = new FormData();
+
+      if(this.form?.valid){
+        this.operationStatus = true;
+        let payload = {
+          id:this.form?.controls['id'].value,
+          title:this.form?.controls['title'].value,
+          description:this.form?.controls['description'].value,
+          foodDetails:this.form?.controls['list'].value
+        }
+
+        const jsonStringPayload = JSON.stringify(payload);
+
+        if(this.selectedFile){
+          formData.append('imageFile',this.selectedFile)
+          formData.append('payload',jsonStringPayload);
+          this.foodService.newCreateOrUpdate(formData).pipe(catchError(err=>{
+            this.operationStatus = false;
+            throw err;
+          })).subscribe(res=>{
+            this.operationStatus = false;
+            this.createOrUpdateMessage = 'İşlem başarılı.'
+            setTimeout(()=>{
+              this.createOrUpdateMessage = ''
+            },4000)
+            if(payload.id == null){
+              this.form?.reset();
+            }
+          });
+        }else{
+          setTimeout(()=>{
+            this.foodService.updateFood(payload).pipe(catchError(err => {
+              this.operationStatus = false;
+              this.createOrUpdateMessage = 'Sistemde bir hata oluştu.'
+
+              setTimeout(()=>{
+                this.createOrUpdateMessage = ''
+              },4000)
+              throw  err;
+            })).subscribe(food=>{
+              this.operationStatus = false;
+              this.createOrUpdateMessage = 'İşlem başarılı.'
+              setTimeout(()=>{
+                this.createOrUpdateMessage = ''
+              },4000)
+              if(payload.id == null){
+                this.form?.reset();
+              }
+            });
+          },1000)
+        }
+
+
+
+
+
+
+
+      }
+
+
+    }
 
 
     ngOnDestroy(): void {
-
       this.subCrross.unsubscribe();
-
     }
 
 

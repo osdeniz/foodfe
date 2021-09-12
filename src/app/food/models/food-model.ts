@@ -1,4 +1,5 @@
 import {UserModel} from "../../user/models/user-model";
+import {ImageModel} from "../../models/image-model";
 
 export namespace FoodModel{
 
@@ -12,7 +13,8 @@ export namespace FoodModel{
     description:string
     createDate?:Date;
     foodDeails?:string
-    user?:UserModel.User
+    user?:UserModel.User,
+    image:ImageModel.Image
   }
 
 }
